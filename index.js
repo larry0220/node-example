@@ -33,13 +33,21 @@ app.get('/listUsers', function(req, res) {
 })
 
 //var models = require('./models');
-app.get('/users', function(req, res) {
+app.get('/users/:id', function(req, res) {
     var json = {
         "me": {
-            "qq": 123,
-            "ww": "users"
+            "id": req.params.id,
+            "email": req.params.email,
+            "haha": "haha"
         }
     }
+    res.json(json).end();
+    //console.log(json);
+})
+
+//var models = require('./models');
+app.post('/users', function(req, res) {
+    var json = req.body;
     res.json(json).end();
     //console.log(json);
 })
