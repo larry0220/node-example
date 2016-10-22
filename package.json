@@ -13,13 +13,18 @@
     "author": "jane-doe",
     "license": "MIT",
     "dependencies": {
-        "express": "^4.9.8"
+        "express": "^4.9.8",
+        "body-parser": "^1.15.2",
+        "sequelize": "^3.23.6",
+        "sequelize-cli": "^2.4.0",
+        "serve-favicon": "~2.3.0",
+        "sqlite3": "^3.0.8"
     },
+    "devDependencies": {},
     "engines": {
         "node": "4.3.1"
     },
     "description": "heroku link https://git.heroku.com/desolate-springs-92404.git",
-    "devDependencies": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/cn27529/node-example.git"
