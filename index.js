@@ -1,83 +1,92 @@
-var cool = require('cool-ascii-faces');
-var express = require('express');
-var app = express();
-var bodyparser = require('body-parser');
-
-
-app.use(bodyparser.urlencoded({
-    extended: true
-}));
-app.use(bodyparser.json());
-
-app.set('port', (process.env.PORT || 5000));
-
-app.use(express.static(__dirname + '/public'));
-
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-// app.get('/', function(request, response) {
-//   response.render('pages/index')
-// });
-app.get('/', function(req, res) {
-    res.send('Hello World!');
-});
-
-app.get('/cool', function(req, res) {
-    res.send(cool());
-});
-
-app.get('/listUsers', function(req, res) {
-    var json = {
-        "me": {
-            "qq": 123,
-            "ww": "listUsers"
-        }
-    }
-    res.json(json).end();
-    //console.log(json);
-})
-
+var app = require('./app');
+var debug = require('debug')('express-sequelize');
+var http = require('http');
 //var models = require('./models');
-app.get('/users/:id/:email', function(req, res) {
-    var json = {
-        "me": {
-            "id": req.params.id,
-            "email": req.params.email,
-            "haha": "haha"
-        }
-    }
-    res.json(json).end();
-    //console.log(json);
-})
 
-//var models = require('./models');
-app.post('/users/', function(req, res) {
-    var json = {
-        "me": {
-            "email": req.body.email,
-            "haha": "haha"
-        }
-    }
-    res.json(json).end();
-    console.log(json);
-})
+/**
+ * Get port from environment and store in Express.
+ */
 
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+  /**
+   * Create HTTP server.
+   */
+var server = http.createServer(app);
 
-//var models = require('./models');
-app.put('/users/:id/', function(req, res) {
-    var json = {
-        "me": {
-            "id": req.params.id,
-            "email": req.body.email,
-            "haha": "response"
-        }
-    }
-    res.json(json).end();
-    console.log(json);
-});
+//models.sequelize.sync().then(function() {
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port, function() {
+    //debug('Express server listening on port ' + server.address().port);
+    console.log('Node app is running on port', port);
+  });
 
-app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
-});
+  server.on('error', onError);
+  server.on('listening', onListening);
+
+//});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+
+  console.log(val);
+
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  //debug('Listening on ' + bind);
+}
