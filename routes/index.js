@@ -11,16 +11,16 @@ router.get('/', function(req, res) {
     //     //res.redirect('/');
     // });
 
-    models.User.findAll({
-      //include: [ models.Task ]
-    }).then(function(data) {
+    // models.User.findAll({
+    //   //include: [ models.Task ]
+    // }).then(function(data) {
+    //
+    //   console.log(data.length);
+    //   res.send(data.length);
+    //
+    // });
 
-      console.log(data.length);
-      res.send(data.length);
-
-    });
-
-    //res.send(cool());
+    res.send(cool());
     console.log(cool());
 });
 
