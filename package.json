@@ -1,31 +1,22 @@
 {
-  "name": "node-example",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [
-    "example",
-    "heroku"
-  ],
-  "author": "jane-doe",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.9.8"
-  },
-  "engines": {
-    "node": "4.3.1"
-  },
-  "description": "https://git.heroku.com/desolate-springs-92404.git",
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cn27529/node-example.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cn27529/node-example/issues"
-  },
-  "homepage": "https://github.com/cn27529/node-example#readme"
+    "name": "node-example",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "example",
+        "heroku"
+    ],
+    "author": "jane-doe",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.9.8"
+    },
+    "engines": {
+        "node": "4.3.1"
+    },
+    "description": "https://git.heroku.com/desolate-springs-92404.git",
+
 }
