@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
     },
     "keywords": [
         "example",
@@ -17,6 +18,14 @@
     "engines": {
         "node": "4.3.1"
     },
-    "description": "https://git.heroku.com/desolate-springs-92404.git"
-
+    "description": "heroku link https://git.heroku.com/desolate-springs-92404.git",
+    "devDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cn27529/node-example.git"
+    },
+    "bugs": {
+        "url": "https://github.com/cn27529/node-example/issues"
+    },
+    "homepage": "https://github.com/cn27529/node-example#readme"
 }
