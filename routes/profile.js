@@ -143,7 +143,6 @@ router.get('/acc/:id', function(req, res) {
         if (data.length > 0) {
             json.profiles = data;
             json.msg = "ok";
-            json.err = data;
         }
         json.id = id;
         res.json(json);
