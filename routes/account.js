@@ -89,7 +89,8 @@ router.get('/id/:id', function(req, res) {
         id: 0,
         msg: "沒有資料",
         err: "",
-        account: null
+        email: "",
+        pwd: ""
     }
 
     models.Account.findOne({
@@ -103,7 +104,8 @@ router.get('/id/:id', function(req, res) {
         if (data != null) {
             json.msg = "ok";
             json.id = data.id;
-            json.account = data;
+            json.email = data.email;
+            json.pwd = data.password;
         }
         res.json(json);
 
@@ -121,7 +123,8 @@ router.get('/has/:email', function(req, res) {
     var json = {
         id: 0,
         email: "",
-        msg: ""
+        msg: "沒有資料",
+        pwd:""
     }
 
 
@@ -133,13 +136,11 @@ router.get('/has/:email', function(req, res) {
 
         console.log(data);
 
-        if (data == null) {
-            json.msg = "沒有資料";
-            json.id = 0;
-        } else {
+        if (data != null) {
             json.msg = "ok";
             json.id = data.id;
             json.email = data.email;
+            json.pwd = data.password;
         }
 
         res.json(json);
