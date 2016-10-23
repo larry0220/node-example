@@ -96,7 +96,8 @@ router.get('/id/:id', function(req, res) {
     //var token = req.params.token; //先不檢查
     var json = {
         id: 0,
-        msg: "沒有資料"
+        msg: "沒有資料",
+        profile:null
     }
 
     models.Profile.findOne({
@@ -110,6 +111,7 @@ router.get('/id/:id', function(req, res) {
         if (data != null) {
             json.msg = "ok";
             json.id = data.id;
+            json.profile = data;
         }
 
         res.json(json);
@@ -126,7 +128,7 @@ router.get('/acc/:id', function(req, res) {
         id: 0,
         msg: "",
         err: "",
-        profiles: []
+        profiles: null
     }
     var id = req.params.id;
     //var token = req.params.token; //先不檢查

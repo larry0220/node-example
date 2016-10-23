@@ -88,7 +88,8 @@ router.get('/id/:id', function(req, res) {
     var json = {
         id: 0,
         msg: "沒有資料",
-        err: ""
+        err: "",
+        account: null
     }
 
     models.Account.findOne({
@@ -102,6 +103,7 @@ router.get('/id/:id', function(req, res) {
         if (data != null) {
             json.msg = "ok";
             json.id = data.id;
+            json.account = data;
         }
         res.json(json);
 
