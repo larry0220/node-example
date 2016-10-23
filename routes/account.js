@@ -32,7 +32,7 @@ router.post('/create', function(req, res) {
                 plain: true
             }))
 
-            console.log(data);
+            //console.log(data);
             json = {
                 "id": data.id, //這是使用者的資料代碼, 可存在用戶端
                 "msg": "ok,資料己建立"
@@ -50,7 +50,7 @@ router.post('/mod', function(req, res) {
 
     var json = {
         id: 0,
-        email: "",
+        email: "沒有資料可更新",
         msg: ""
     }
 
@@ -61,17 +61,19 @@ router.post('/mod', function(req, res) {
         })
         .then(function(data) {
 
-            data.update({
-                    email: email
-                })
-                .then(function() {
+            if (data != null) {
+                data.update({
+                        email: email
+                    })
+                    .then(function() {
 
-                })
+                    })
 
-            console.log(data);
-            json.id = data.id; //這是使用者的資料代碼, 可存在用戶端
-            json.email = data.email;
-            json.msg = "ok,資料己更新";
+                console.log(data);
+                json.id = data.id; //這是使用者的資料代碼, 可存在用戶端
+                json.email = data.email;
+                json.msg = "ok,資料己更新";
+            }
 
             res.json(json);
 
@@ -85,7 +87,8 @@ router.get('/id/:id', function(req, res) {
     //var token = req.params.token; //先不檢查
     var json = {
         id: 0,
-        msg: ""
+        msg: "沒有資料",
+        err: ""
     }
 
     models.Account.findOne({
@@ -96,14 +99,10 @@ router.get('/id/:id', function(req, res) {
 
         console.log(data);
 
-        if (data == null) {
-            json.msg = "沒有資料";
-            json.id = 0;
-        } else {
+        if (data != null) {
             json.msg = "ok";
             json.id = data.id;
         }
-
         res.json(json);
 
     });

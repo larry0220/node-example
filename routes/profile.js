@@ -49,13 +49,11 @@ router.post('/mod', function(req, res) {
     var json = {
         id: 0,
         err: "",
-        msg: ""
+        msg: "沒有資料可更新"
     }
 
     //console.log(req.body.profile.id);
     //res.send(cool());
-
-
 
     models.Profile.find({
             where: {
@@ -64,13 +62,7 @@ router.post('/mod', function(req, res) {
         })
         .then(function(data) {
 
-            if (data == null) {
-
-                json.msg = "沒有資料可更新";
-                json.err = "";
-                json.id = 0;
-
-            } else {
+            if (data != null) {
 
                 data.update({
                         name: req.body.profile.name,
@@ -92,7 +84,6 @@ router.post('/mod', function(req, res) {
 
             }
 
-
             res.json(json);
 
         });
@@ -105,7 +96,7 @@ router.get('/id/:id', function(req, res) {
     //var token = req.params.token; //先不檢查
     var json = {
         id: 0,
-        msg: ""
+        msg: "沒有資料"
     }
 
     models.Profile.findOne({
@@ -116,14 +107,42 @@ router.get('/id/:id', function(req, res) {
 
         console.log(data);
 
-        if (data == null) {
-            json.msg = "沒有資料";
-            json.id = 0;
-        } else {
+        if (data != null) {
             json.msg = "ok";
             json.id = data.id;
         }
 
+        res.json(json);
+
+    });
+    //res.send(cool());
+    console.log(cool());
+
+});
+
+router.get('/acc/:id', function(req, res) {
+
+    var json = {
+        id: 0,
+        msg: "",
+        err: "",
+        profiles: []
+    }
+    var id = req.params.id;
+    //var token = req.params.token; //先不檢查
+
+    models.Profile.findAll({
+        where: {
+            AccountId: id
+        }
+    }).then(function(data) {
+
+        //console.log(data);
+        if (data != null) {
+            json.profiles = data;
+            json.msg = "ok";
+        }
+        json.id = id;
         res.json(json);
 
     });
@@ -141,13 +160,15 @@ router.get('/all', function(req, res) {
 
     }).then(function(data) {
 
-        console.log(data);
+        //console.log(data);
         res.json(data);
 
     });
     //res.send(cool());
-    console.log(cool());
+    //console.log(cool());
 
 });
+
+
 
 module.exports = router;
