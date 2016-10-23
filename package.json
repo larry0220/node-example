@@ -1,9 +1,8 @@
 {
-  "name": "node-example",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "mycloudlife-example",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "keywords": [
@@ -25,14 +24,11 @@
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.0.8"
   },
-  "devDependencies": {},
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cn27529/node-example.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cn27529/node-example/issues"
-  },
-  "homepage": "https://github.com/cn27529/node-example#readme"
+  "devDependencies": {
+    "bluebird": "^3.4.1",
+    "cross-env": "^3.1.3",
+    "expect.js": "^0.3.1",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
+  }
 }

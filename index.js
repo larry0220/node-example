@@ -1,5 +1,5 @@
 var app = require('./app');
-var debug = require('debug')('express-sequelize');
+//var debug = require('debug')('express-sequelize');
 var http = require('http');
 var models = require('./models');
 
