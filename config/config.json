@@ -11,10 +11,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "DiaryUser",
+    "password": "3edc#EDC@pwd",
+    "database": "mycloudlife",
+    "host": "107.180.56.151",
     "dialect": "mysql"
   }
 }
