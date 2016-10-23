@@ -65,7 +65,7 @@ router.post(api_name + '/create', function(req, res) {
 
 });
 
-router.get(api_name + '/:id', function(req, res) {
+router.get(api_name + '/id/:id', function(req, res) {
 
     var id = req.params.id;
     //var token = req.params.token; //先不檢查
@@ -85,6 +85,52 @@ router.get(api_name + '/:id', function(req, res) {
             "err": ""
         }
         res.json(json);
+
+    });
+    //res.send(cool());
+    console.log(cool());
+
+});
+
+router.get(api_name + '/email/:email', function(req, res) {
+
+    var eamil = req.params.email;
+    //var token = req.params.token; //先不檢查
+
+    models.Account.findOne({
+        where: {
+            eamil: eamil
+        }
+    }).then(function(data) {
+
+        console.log(data);
+
+        json = {
+            "id": data.id, //這是使用者的資料代碼, 可存在用戶端
+            "email": data.email,
+            "msg": "ok,資料己存在",
+            "err": ""
+        }
+        res.json(json);
+
+    });
+    //res.send(cool());
+    console.log(cool());
+
+});
+
+
+router.get(api_name + '/all', function(req, res) {
+
+    var id = req.params.id;
+    //var token = req.params.token; //先不檢查
+
+    models.Account.findAll({
+
+    }).then(function(data) {
+
+        console.log(data);
+        res.json(data);
 
     });
     //res.send(cool());

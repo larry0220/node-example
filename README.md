@@ -1,4 +1,7 @@
 # node-example
 
-heroku link
-https://git.heroku.com/desolate-springs-92404.git
+my run sqlite
+
+
+heroku link run diskdb
+https://git.heroku.com/cn92404.git

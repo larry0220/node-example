@@ -11,7 +11,7 @@ app.use(bodyparser.json());
 //URL位置
 var index = require('./routes/index');
 //var users  = require('./routes/users');
-var account  = require('./routes/account-diskdb');
+var account  = require('./routes/account');
 
 //app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));

@@ -1,7 +1,7 @@
 {
   "name": "node-example",
   "version": "1.0.0",
-  "main": "index2.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -16,13 +16,18 @@
     "body-parser": "^1.15.2",
     "diskdb": "^0.1.15",
     "express": "^4.9.8",
+    "mssql": "^3.3.0",
+    "mysql2": "^1.1.1",
+    "sequelize": "^3.24.3",
+    "sequelize-cli": "^2.4.0",
     "sqlite3": "^3.1.5"
+
   },
   "devDependencies": {},
   "engines": {
     "node": "4.3.1"
   },
-  "description": "heroku link https://git.heroku.com/desolate-springs-92404.git",
+  "description": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cn27529/node-example.git"
