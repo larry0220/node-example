@@ -12,6 +12,7 @@ app.use(bodyparser.json());
 var index = require('./routes/index');
 //var users  = require('./routes/users');
 var account  = require('./routes/account');
+var profile  = require('./routes/profile');
 
 //app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
@@ -19,6 +20,7 @@ var account  = require('./routes/account');
 app.use('/', index);
 //app.use('/users', users);
 app.use('/account', account);
+app.use('/profile', profile);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

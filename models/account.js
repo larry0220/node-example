@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
         password: DataTypes.STRING
         //credate: DataTypes.STRING
     }, {
+      freezeTableName: false,
       classMethods: {
         associate: function(models) {
           Account.hasMany(models.Profile)

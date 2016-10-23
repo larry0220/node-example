@@ -8,9 +8,11 @@ module.exports = function(sequelize, DataTypes) {
         birthday: DataTypes.STRING,
         sex: DataTypes.STRING,
         role: DataTypes.STRING,
-        image: DataTypes.TEXT
-        //credate: DataTypes.STRING
+        image: DataTypes.TEXT,
+        flag: DataTypes.STRING,
+        AccountId: DataTypes.INTEGER
     }, {
+      freezeTableName: false,
       classMethods: {
         associate: function(models) {
           Profile.belongsTo(models.Account, {
