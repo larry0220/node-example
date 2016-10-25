@@ -194,7 +194,9 @@ router.get('/pro/:id/:top', function(req, res) {
 });
 
 
-
+router.delete('/del/:id', function(req, res) {
+    res.json({});
+})
 
 
 module.exports = router;
