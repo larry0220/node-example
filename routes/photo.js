@@ -20,7 +20,7 @@ router.post('/create', function(req, res) {
         body: req.body.photo.body,
         ProfileId: req.body.id
     }).then(function(data) {
-        console.log(data.get({'plain': true}));
+        console.log(data.get({plain: true}));
         json = {
             "id": data.id, //這是使用者的資料代碼, 可存在用戶端
             "msg": "ok,資料己建立",
@@ -69,7 +69,7 @@ router.post('/mod', function(req, res) {
             var photoId = data.id;
             json.id = photoId; //這是 photo id資料代碼, 可存在用戶端
 
-            console.log(data.get({'plain': true}));
+            console.log(data.get({plain: true}));
 
             data.update({
                     title: req.body.photo.title,
@@ -112,9 +112,9 @@ router.post('/mod', function(req, res) {
 
 });
 
-router.get('/id/:id/:top', function(req, res) {
-    // console.log(req.params, req.query);
 
+// get by id
+router.get('/pro/:id/:top', function(req, res) {
     var id = req.params.id;
     //var token = req.params.token; //先不檢查
     var json = {
@@ -124,62 +124,68 @@ router.get('/id/:id/:top', function(req, res) {
         photos: []
     }
 
-    models.Photo.findOne({
+    models.Profile.findOne({
         where: {
             id: id
         }
     }).then(function(data) {
+        if (data === null) {
+          return res.json(json);
+        }
 
-        console.log(data.get({'plain': true}));
+        // console.log(data.get({plain: true}));
 
-        if (data != null) {
-            json.msg = "ok";
-            json.id = data.id;
+        var profileId = data.id;
 
-            // 先確認有相簿，再撈photo_image的資料
-            models.Photo_image.findAll({
+        json.id = data.id;
+        json.msg = "ok";
+
+        // 撈photo的資料
+        models.Photo.findAll({
+                where: {
+                    ProfileId: profileId
+                }
+        }).then(function(photos) {
+            // 把photo_images塞入photo
+            var promises = [];
+
+            photos.forEach(function(item, index) {
+                var photoId = item.id;
+                var photo = Object.assign({}, {
+                  id: photoId,
+                  title: item.title,
+                  body: item.body
+                });
+
+
+                promises[index] = models.Photo_image.findAll({
                     where: {
-                        PhotoId: data.id
-                      }
-            }).then(function(images) {
-                json.photos = images;
+                      PhotoId: photoId
+                    }
+                }).then(function(images) {
+                    images = images.map(function(item) {
+                      var image = Object.assign({}, {
+                        id: item.id,
+                        title: item.title,
+                        image: 'base64字串'
+                      });
 
-                res.json(json);
+                      return image;
+                    });
+
+                    // console.log(images);
+
+                    photo.photo_images = images;
+                    // console.log('^^', photo);
+                    json.photos.push(photo);
+                });
             });
-        }
 
-
-
-    });
-    //res.send(cool());
-    console.log(cool());
-
-});
-
-router.get('/acc/:id', function(req, res) {
-
-    var json = {
-        id: 0,
-        msg: "沒有資料",
-        err: "",
-        profiles: []
-    }
-    var id = req.params.id;
-    //var token = req.params.token; //先不檢查
-
-    models.Photo.findAll({
-        where: {
-            AccountId: id
-        }
-    }).then(function(data) {
-
-        //console.log(data);
-        if (data.length > 0) {
-            json.profiles = data;
-            json.msg = "ok";
-        }
-        json.id = id;
-        res.json(json);
+            Promise.all(promises)
+                .then(function() {
+                  res.json(json);
+                })
+        });
 
     });
     //res.send(cool());
@@ -187,23 +193,7 @@ router.get('/acc/:id', function(req, res) {
 
 });
 
-router.get('/all', function(req, res) {
 
-    //var id = req.params.id;
-    //var token = req.params.token; //先不檢查
-
-    models.Photo.findAll({
-
-    }).then(function(data) {
-
-        //console.log(data);
-        res.json(data);
-
-    });
-    //res.send(cool());
-    //console.log(cool());
-
-});
 
 
 
