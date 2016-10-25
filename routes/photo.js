@@ -7,8 +7,7 @@ var cool = require('cool-ascii-faces');
 //https://cn27529.gitbooks.io/mycloudlife-api/content/account.html
 
 
-
-//create
+//create ok
 router.post('/create', function(req, res) {
 
     //token檢查, 先不檢查
@@ -16,105 +15,140 @@ router.post('/create', function(req, res) {
 
     var json = {};
 
-    //console.log(req.body.profile.name);
-
-    //var pf = JSON.parse(req.body.profile);
-
-    //console.log(req.body.profile.birthday);
-    //res.send(cool());
-
-    models.Profile.create({
-        name: req.body.profile.name,
-        birthday: req.body.profile.birthday,
-        sex: req.body.profile.sex,
-        role: req.body.profile.role,
-        image: req.body.profile.image,
-        flag: req.body.profile.flag,
-        AccountId: req.body.id
+    models.Photo.create({
+        title: req.body.photo.title,
+        body: req.body.photo.body,
+        ProfileId: req.body.id
     }).then(function(data) {
-        console.log(data);
+        console.log(data.get({'plain': true}));
         json = {
             "id": data.id, //這是使用者的資料代碼, 可存在用戶端
             "msg": "ok,資料己建立",
             "err": ""
         }
+
+        req.body.photo_images.forEach(function(item) {
+          models.Photo_image.create({
+            title: item.title,
+            image: item.image,
+            PhotoId: data.id
+          })
+        })
+
+
+
         res.json(json);
     });
 
+
+
 });
 
-//update
+//update ok
 router.post('/mod', function(req, res) {
 
     var json = {
         id: 0,
+        msg: "沒有資料可更新",
         err: "",
-        msg: "沒有資料可更新"
     }
 
-    //console.log(req.body.profile.id);
     //res.send(cool());
 
-    models.Profile.find({
+    models.Photo.findOne({
             where: {
-                id: req.body.profile.id
+                ProfileId: req.body.id,
+                id: req.body.photo.id
             }
         })
         .then(function(data) {
-
-            if (data != null) {
-
-                data.update({
-                        name: req.body.profile.name,
-                        birthday: req.body.profile.birthday,
-                        sex: req.body.profile.sex,
-                        role: req.body.profile.role,
-                        image: req.body.profile.image,
-                        flag: req.body.profile.flag
-                            //AccountId: req.body.id
-                    })
-                    .then(function() {
-
-                    })
-
-                //console.log(data);
-                json.id = data.id; //這是 profile id資料代碼, 可存在用戶端
-                json.err = "";
-                json.msg = "ok,資料己更新";
-
+            if (data === null) {
+              return res.json(json);
             }
 
-            res.json(json);
+            var photoId = data.id;
+            json.id = photoId; //這是 photo id資料代碼, 可存在用戶端
 
+            console.log(data.get({'plain': true}));
+
+            data.update({
+                    title: req.body.photo.title,
+                    body: req.body.photo.body,
+                })
+                .then(function(data) {
+                  // update photo_image
+                  var images = req.body.photo_images;
+
+                  if (!Array.isArray(images)) {
+                      return res.send('no Array')
+                  }
+
+                  images.forEach(function(item) {
+                    models.Photo_image.findOne({
+                          where: {
+                            PhotoId: photoId,
+                            id: item.id
+                          }
+                        })
+                        .then(function(image) {
+                            if (image === null) {
+                              return
+                            }
+
+                            image.update({
+                              title: item.title,
+                              image: item.image
+                            });
+                        });
+                  });
+
+                  json.err = "";
+                  json.msg = "ok,資料己更新";
+
+                  res.json(json);
+
+                })
         });
 
 });
 
-router.get('/id/:id', function(req, res) {
+router.get('/id/:id/:top', function(req, res) {
+    // console.log(req.params, req.query);
 
     var id = req.params.id;
     //var token = req.params.token; //先不檢查
     var json = {
         id: 0,
         msg: "沒有資料",
-        profile: null
+        err: "",
+        photos: []
     }
 
-    models.Profile.findOne({
+    models.Photo.findOne({
         where: {
             id: id
         }
     }).then(function(data) {
 
-        console.log(data);
+        console.log(data.get({'plain': true}));
 
         if (data != null) {
             json.msg = "ok";
             json.id = data.id;
-            json.profile = data;
+
+            // 先確認有相簿，再撈photo_image的資料
+            models.Photo_image.findAll({
+                    where: {
+                        PhotoId: data.id
+                      }
+            }).then(function(images) {
+                json.photos = images;
+
+                res.json(json);
+            });
         }
 
-        res.json(json);
+
 
     });
     //res.send(cool());
@@ -133,7 +167,7 @@ router.get('/acc/:id', function(req, res) {
     var id = req.params.id;
     //var token = req.params.token; //先不檢查
 
-    models.Profile.findAll({
+    models.Photo.findAll({
         where: {
             AccountId: id
         }
@@ -158,7 +192,7 @@ router.get('/all', function(req, res) {
     //var id = req.params.id;
     //var token = req.params.token; //先不檢查
 
-    models.Profile.findAll({
+    models.Photo.findAll({
 
     }).then(function(data) {
 
