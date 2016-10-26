@@ -193,9 +193,38 @@ router.get('/pro/:id/:top', function(req, res) {
 
 });
 
-
+// delete by photo id
 router.delete('/del/:id', function(req, res) {
-    res.json({});
+  models.Photo.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(function(data) {
+      console.log(data);
+      res.json({
+        "id": req.params.id,
+        "msg": "ok",
+        "err": ""
+      })
+    });
+});
+
+// delete by photo_image id
+router.delete('/delimage/:id', function(req, res) {
+  models.Photo_image.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(function(data) {
+      console.log(data);
+      res.json({
+        "id": req.params.id, 
+        "msg": "ok",
+        "err": ""
+      })
+    });
 })
 
 
