@@ -25,5 +25,8 @@ module.exports = function(sequelize, DataTypes) {
       }
     });
 
+    //Profile.hasMany(models.Note);
+    //Profile.hasMany(models.Photo);
+
     return Profile;
 };
