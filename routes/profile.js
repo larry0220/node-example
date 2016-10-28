@@ -6,40 +6,50 @@ var cool = require('cool-ascii-faces');
 //文件
 //https://cn27529.gitbooks.io/mycloudlife-api/content/account.html
 
-
-
 //create
 router.post('/create', function(req, res) {
 
     //token檢查, 先不檢查
     //var token = req.body.token;
 
-    var json = {};
+    var json = {
+        id: 0,
+        msg: "建立過程有錯誤請查看值的正確性",
+        err: ""
+    }
 
-    //console.log(req.body.profile.name);
+    models.Profile.findOrCreate({
+            where: {
+                name: req.body.profile.name,
+                AccountId: req.body.id
+            },
+            defaults: {
+                name: req.body.profile.name,
+                birthday: req.body.profile.birthday,
+                sex: req.body.profile.sex,
+                role: req.body.profile.role,
+                image: req.body.profile.image,
+                flag: req.body.profile.flag,
+                AccountId: req.body.id
+            }
+        })
+        .spread(function(data, created) {
+            console.log(data.get({
+                    plain: true
+                }))
+                //console.log(data);
+            json.id = data.id, //這是資料代碼
+                json.msg = "ok,資料己建立"
 
-    //var pf = JSON.parse(req.body.profile);
+            res.json(json);
 
-    //console.log(req.body.profile.birthday);
-    //res.send(cool());
-
-    models.Profile.create({
-        name: req.body.profile.name,
-        birthday: req.body.profile.birthday,
-        sex: req.body.profile.sex,
-        role: req.body.profile.role,
-        image: req.body.profile.image,
-        flag: req.body.profile.flag,
-        AccountId: req.body.id
-    }).then(function(data) {
-        console.log(data);
-        json = {
-            "id": data.id, //這是使用者的資料代碼, 可存在用戶端
-            "msg": "ok,資料己建立",
-            "err": ""
-        }
-        res.json(json);
-    });
+        }).catch(function(err) {
+            // handle error;
+            console.log(err);
+            json.err = "sql";
+            //json.msg = "";
+            res.json(json);
+        });
 
 });
 
@@ -86,6 +96,12 @@ router.post('/mod', function(req, res) {
 
             res.json(json);
 
+        }).catch(function(err) {
+            // handle error;
+            console.log(err);
+            json.err = "sql";
+            //json.msg = "";
+            res.json(json);
         });
 
 });
@@ -116,9 +132,15 @@ router.get('/id/:id', function(req, res) {
 
         res.json(json);
 
+    }).catch(function(err) {
+        // handle error;
+        console.log(err);
+        json.err = "sql";
+        //json.msg = "";
+        res.json(json);
     });
     //res.send(cool());
-    console.log(cool());
+    //console.log(cool());
 
 });
 
@@ -147,21 +169,29 @@ router.get('/acc/:id', function(req, res) {
         json.id = id;
         res.json(json);
 
+    }).catch(function(err) {
+        // handle error;
+        console.log(err);
+        json.err = "sql";
+        //json.msg = "";
+        res.json(json);
     });
     //res.send(cool());
-    console.log(cool());
+    //console.log(cool());
 
 });
 
-router.get('/all', function(req, res) {
+//all的通關密語是Q_QtaiwanQvQ
+router.get('/all/:keyword', function(req, res) {
 
-    //var id = req.params.id;
+    var keyword = req.params.keyword;
     //var token = req.params.token; //先不檢查
 
     models.Profile.findAll({
 
     }).then(function(data) {
 
+        if (keyword != "Q_QtaiwanQvQ") data = cool();
         //console.log(data);
         res.json(data);
 
@@ -170,7 +200,6 @@ router.get('/all', function(req, res) {
     //console.log(cool());
 
 });
-
 
 
 module.exports = router;
